@@ -1,12 +1,3 @@
-const input = document.querySelector('#font-size-control');
-//console.log(input.value);
-const text = document.querySelector('#text');
-function zmiana(){
-    //text.setAttribute("value", input.value);
-    text.style.fontSize =input.value+"px";
-}
-input.addEventListener("change", zmiana);
-
 class Hero {
     constructor(name,strength,stamina,esencja,okruchy,hp){
     this.name=name;
@@ -42,13 +33,28 @@ const enemy2 =new Enemy(
 const enemy3 =new Enemy(
     "Pieczarka", 3, 3, 10
 );
+//Funkcja  zwraca dmg zandany przez kto i zmienia hp komu
 function DMG(kto,komu){
-    let dmg =Math.max(kto.strength -komu.stamina,1)
+   let dmg =Math.max(kto.strength -komu.stamina,1)
    komu.hp-=dmg;
    //console.log(dmg);
    return dmg;
 }
-
+//Testy
+console.log("Test1");
 console.log (hero1,enemy1);
 DMG(hero1,enemy1);
 console.log (hero1,enemy1);
+
+//zmiana paska HP
+const EnemyHP1 = document.querySelector('#EnemyHP1');
+const HeroHP1 = document.querySelector('#HeroHP1');
+
+console.log("Test2");
+console.log(HeroHP1.value);
+HeroHP1.value-=DMG(enemy2,hero1);
+console.log(HeroHP1.value);
+
+function Battle(){
+    
+}

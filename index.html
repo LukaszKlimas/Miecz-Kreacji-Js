@@ -9,10 +9,22 @@
   </head>
   <body>
     <ul>
-      <li><a href="task-01.html">Task 1</a></li>
+      <!-- <li><a href="nieistnieje.html">tymczasowy nie działający link</a></li> -->
     </ul>
+    <input id="font-size-control" type="range" min="16" max="96" />
     <span id="text">Abracadabra!</span>
 
     <script src="js/battle.js"></script>
   </body>
 </html>
+
+<!-- stary event lisner by nie zapomnieć
+const input = document.querySelector('#font-size-control');
+//console.log(input.value);
+const text = document.querySelector('#text');
+function zmiana(){
+    //text.setAttribute("value", input.value);
+    text.style.fontSize =input.value+"px";
+}
+input.addEventListener("change", zmiana);
+ -->
