@@ -26,6 +26,7 @@ const SkillStyl1 =[
 const SkillStyl2 =[
     new Skill("Pięciu Smoków","Moc 5-Smoków","Następny atak ignoruje buffy przeciwnika.",4,20),
     new Skill("Pięciu Smoków","Siła 5-Smoków","Następny atak ma większe bazowe obrażenia o (40+5xEsencja)%.",4,20),
+    //Math.round(hero1.dmg*(40+5*hero1.esencja)/100);
     new Skill("Pięciu Smoków","Pancerz 5-Smoków","Zwiększa pancerz na 1 turę o Esencja.",2,10),
 ];
 

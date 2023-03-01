@@ -19,7 +19,7 @@ class Skill{
         new Skill("Ostrze Penatgramu","Osłabienie","Przeciwnik przez 1 turę zadaje mniejsze obrażenia o Esencję.",3,20),
         new Skill("Ostrze Penatgramu","Kontratak lotosu","Jeśli przeciwnik zadał 0 obrażeń, kontratakujesz.",1,10),
         new Skill("Pięciu Smoków","Moc 5-Smoków","Następny atak ignoruje buffy przeciwnika.",4,20),
-        new Skill("Pięciu Smoków","Siła 5-Smoków","Następny atak ma większe bazowe obrażenia o (40+5xEsencja)%.",4,20),
+        new Skill("Pięciu Smoków","Wzmocnienie 5-Smoków","Zwiększa bazowe obrażenia na 1 turę o Esencję.",3,20),
         new Skill("Pięciu Smoków","Pancerz 5-Smoków","Zwiększa pancerz na 1 turę o Esencja.",2,10),
     ];
 
@@ -29,35 +29,6 @@ const hero1={
 }
 const enemy1={
         name:"testowy2",dmg:5,pancerz:2,hp:10,lokacja:"kanały,", Statusy:[]
-}
-// */
-//Funkcja  zwraca dmg zandany przez kto i zmienia hp komu
-function DMG(kto,komu){
-   let bonsusDmg=0;
-        if(kto.Statusy!=null){//sprawdzamy czy kto ma buff do dmg
-                let del=[];
-                //biegniemy po całej tablicy, zmniejszamy tury buffów,
-                //a te co miałby 0 , zapisujemy indeksy do del
-                for(let i=kto.Statusy.length-1; i>=0; i--){
-                        if(kto.Statusy[i][1]=="dmg"){
-                                bonsusDmg+=kto.Statusy[i][2];
-                                if(kto.Statusy[i][0]==1){
-                                        //console.log("jest"+i);
-                                       del.push(i);                                       
-                                }else{
-                                        kto.Statusy[i][0]-=1;}
-                                }
-                        } 
-                //to tera usuwamy pokleji Statusy, które miały zniknąć
-                //bez obaw del jest posortowane od największej do najmniejszej
-                del.forEach(el => {
-                        kto.Statusy.splice(el,1);  
-                });
-                }    
-   let dmg =Math.max(kto.dmg -komu.pancerz,0)
-   komu.hp-=dmg;
-   //console.log(dmg);
-   return dmg;
 }
 //Pobranie paska HP i MP
 const PasekEnemyHP1 = document.querySelector('#EnemyHP1');
@@ -69,8 +40,8 @@ PasekEnemyHP1.max=enemy1.hp;
 PasekHeroHP1.max=hero1.MaxHP;
 PasekHeroMP1.max=hero1.MaxMP;
 PasekEnemyHP1.value=enemy1.hp;
-PasekHeroHP1.value=hero1.MaxHP;
-PasekHeroMP1.value=hero1.MaxMP;
+PasekHeroHP1.value=hero1.hp;
+PasekHeroMP1.value=hero1.okruchy;
 //Pobranie guzików skili 1-6
 const ButtonSkill1 = document.querySelector('#ButtonSkill1');
 const ButtonSkill2 = document.querySelector('#ButtonSkill2');
@@ -110,8 +81,97 @@ const CilkStart=()=>{
         
 }
 StartBtn.addEventListener("click", CilkStart);
-
+//Okej, funkcje
+//Funkcja  zwraca dmg zandany przez kto i zmienia hp komu
+function DMG(kto,komu){
+        let bonsusDmg=0;
+             if(kto.Statusy!=null){//sprawdzamy czy kto ma buff do dmg
+                     let del=[];
+                     //biegniemy po całej tablicy, zmniejszamy tury buffów,
+                     //a te co miałby 0 , zapisujemy indeksy do del
+                     for(let i=kto.Statusy.length-1; i>=0; i--){
+                             if(kto.Statusy[i][1]=="dmg"){
+                                     bonsusDmg+=kto.Statusy[i][2];
+                                     if(kto.Statusy[i][0]==1){
+                                             //console.log("jest"+i);
+                                            del.push(i);                                       
+                                     }else{
+                                             kto.Statusy[i][0]-=1;}
+                                     }
+                             } 
+                     //to tera usuwamy pokleji Statusy, które miały zniknąć
+                     //bez obaw del jest posortowane od największej do najmniejszej
+                     del.forEach(el => {
+                             kto.Statusy.splice(el,1);  
+                     });
+                     }
+                     if(komu.Statusy!=null){//sprawdzamy czy komu ma buff do pancerza
+                             let del=[];
+                             //biegniemy po całej tablicy, zmniejszamy tury buffów,
+                             //a te co miałby 0 , zapisujemy indeksy do del
+                             for(let i=komu.Statusy.length-1; i>=0; i--){
+                                     if(komu.Statusy[i][1]=="pancerz"){
+                                             bonsusDmg-=komu.Statusy[i][2];
+                                             if(komu.Statusy[i][0]==1){
+                                                     //console.log("jest"+i);
+                                                    del.push(i);                                       
+                                             }else{
+                                                     komu.Statusy[i][0]-=1;}
+                                             }
+                                     } 
+                             //to tera usuwamy pokleji Statusy, które miały zniknąć
+                             //bez obaw del jest posortowane od największej do najmniejszej
+                             del.forEach(el => {
+                                     komu.Statusy.splice(el,1);  
+                             });
+                             }     
+        let dmg =Math.max(kto.dmg -komu.pancerz+bonsusDmg,0);
+        komu.hp-=dmg;
+        //jeszcze aktualizacja paska, poprostu obu, potem pomyśle
+        PasekEnemyHP1.value=enemy1.hp;
+        PasekHeroHP1.value=hero1.hp;
+        return dmg;
+     }
+//Funkcja  zwraca dmg zandany przez kto w pojednczym ataku i zmienia hp komu
+function wielokrotnyDMG(kto,komu,ile){
+             let bonsusDmg=0;
+             if(kto.Statusy!=null){//sprawdzamy czy kto ma buff do dmg
+                     //biegniemy po całej tablicy, i NIC NIE robimy z turami bufów!
+                     for(let i=kto.Statusy.length-1; i>=0; i--){
+                             if(kto.Statusy[i][1]=="dmg"){
+                                     bonsusDmg+=kto.Statusy[i][2];
+                             } 
+                     }
+             }       
+             if(komu.Statusy!=null){//sprawdzamy czy kto ma buff do pancerza
+                     //biegniemy po całej tablicy, i NIC NIE robimy z turami bufów!
+                     for(let i=kto.Statusy.length-1; i>=0; i--){
+                             if(komu.Statusy[i][1]=="pancerz"){
+                                     bonsusDmg-=komu.Statusy[i][2];
+                             }
+                     }
+             } 
+             //poprostu mnożymy przez (ile-1) a potem urachamimy dmg, żeby zmniejszyć tury bufów   
+             let dmg =Math.max(kto.dmg -komu.pancerz+bonsusDmg,0);
+             komu.hp-=((ile-1)*dmg);
+             DMG(kto,komu);
+             return dmg();
+     }
+     //tymczasowa tabela CoolDown
+     const CD=[0,0,0,0,0,0];
 function skill(numer){
+        if (numer==3 ||numer==4){
+                console.log("Niezaimplementowane jeszcze");
+                 return;  
+        }
+        if(hero1.okruchy<SkillStyl1[numer-1][4]){
+                console.log("Brak okruchów");
+                return;
+        }
+        if(CD[numer]>0){
+                console.log(`Pozostało ${CD[numer]} tur do użycia`);
+                return;
+        }
  console.log(SkillStyl1[numer-1].ShowSkill());
         switch (numer){
                 case 1:
@@ -125,15 +185,15 @@ function skill(numer){
                 case 3:
 //Jeśli przeciwnik zadał 0 obrażeń, kontratakujesz.
  //będzie trudno!
-DMG(hero1,enemy1);
+console.log(DMG(hero1,enemy1));
                 break;
                 case 4:
  //Następny atak ignoruje buffy przeciwnika.
  hero1.Statusy.pop(); console.log(hero1);//usuwa ostatni element
                 break;
                 case 5:
-//Następny atak ma większe obrażenia o (40+5xEsencja)%.
-hero1.Statusy.push([1,"dmg",Math.round(hero1.dmg*(40+5*hero1.esencja)/100)]);
+//Zwiększa bazowe obrażenia na 1 turę o Esencję
+hero1.Statusy.push([1,"dmg",hero1.esencja]);
 console.log(hero1);
                 break;
                 case 6:

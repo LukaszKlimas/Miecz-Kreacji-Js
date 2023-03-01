@@ -9,9 +9,13 @@ max-width:340px
 }
 button {
     padding: 10px 20px;
-    align-items: center;
+
     margin-top: 5px;
     margin-bottom: 5px;
+}
+#Start {
+  margin-left: 100px;
+  width: 100px;
 }
 
 .card {
@@ -28,7 +32,7 @@ button {
   
   .card > .content {
     flex-grow: 1;
-    
+
     margin-bottom: 10px;
     padding: 10px;
     border-radius: 4px;
