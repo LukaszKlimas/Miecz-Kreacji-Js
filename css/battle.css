@@ -1,0 +1,46 @@
+#PasekButton {
+-webkit-box-shadow: 0px 0px 10px 6px rgba(48, 87, 148, 1);
+-moz-box-shadow: 0px 0px 10px 6px rgba(48, 87, 148, 1);
+box-shadow: 0px 0px 10px 6px rgba(48, 87, 148, 1);
+max-width:340px
+}
+#PasekButton > :first-child {
+    margin-left: 8px;
+}
+button {
+    padding: 10px 20px;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.card {
+    display: flex;
+    flex-direction:column;
+    flex-basis: 360px;
+    margin: 2px;
+    padding: 2px;
+    background-color: #fff;
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+      0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+  }
+  
+  .card > .content {
+    flex-grow: 1;
+    
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 4px;
+  }
+  .card > #PasekButton {
+    padding: 10px;
+    text-align: center;
+    background-color: teal;
+    color: white;
+    border-radius: 4px;
+  }
+  .container {
+    display: flex;
+    justify-content:left;
+  }
