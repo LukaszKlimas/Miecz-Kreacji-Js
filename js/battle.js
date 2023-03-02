@@ -12,7 +12,7 @@ class Hero {
         this.lv=1;
         this.MaxHP=hp;
         this.MaxMP=okruchy;
-        this.SkillTree=[];
+        //this.SkillTree=[];
         this.Statusy=[];
             }
         LevelUP(gdzie){
@@ -28,9 +28,9 @@ class Hero {
             this.lv+=1;
         }
         ShowHero(){
-                let a;
+                let a="";
             for (const key in this) {
-                a=+(key+": "+this[key]+"\n");
+                a+=(key+": "+this[key]+"\n");
             }
             return a;
         }
@@ -49,18 +49,11 @@ class Hero {
     }
 //koniec pliku hero
 //Plik Skill
-class Skill{
+class SkillPasywny{
         constructor(kategoria,nazwa, opis){
             this.kategoria=kategoria;
             this.nazwa=nazwa;
             this.opis=opis;
-        }
-        constructor(kategoria,nazwa, opis, cd, koszt){
-            this.kategoria=kategoria;
-            this.nazwa=nazwa;
-            this.opis=opis;
-            this.cd=cd;
-            this.koszt=koszt;
         }
         ShowSkill(){
             if(this.cd!=null){
@@ -69,13 +62,20 @@ class Skill{
             return `${this.nazwa}: ${this.opis}`;
         }
     }
+    class Skill extends SkillPasywny{
+        constructor(kategoria,nazwa, opis, cd, koszt){
+                super(kategoria,nazwa, opis,);
+                this.cd=cd;
+                this.koszt=koszt;
+            }
+    }
     const Skills =[
         new Skill("Ostrze Penatgramu","Atak przebijający","Redukuje pancerz przeciwnika na 1 turę o Esencję.",3,20),
         new Skill("Ostrze Penatgramu","Osłabienie","Przeciwnik przez 1 turę zadaje mniejsze obrażenia o Esencję.",3,20),
         new Skill("Ostrze Penatgramu","Kontratak lotosu","Jeśli przeciwnik zadał 0 obrażeń, kontratakujesz.",1,10),
         new Skill("Pięciu Smoków","Moc 5-Smoków","Następny atak ignoruje buffy przeciwnika.",4,20),
         new Skill("Pięciu Smoków","Wzmocnienie 5-Smoków","Zwiększa bazowe obrażenia na 1 turę o Esencję.",3,20),
-        new Skill("Pięciu Smoków","Pancerz 5-Smoków","Zwiększa pancerz na 1 turę o Esencja.",2,10),
+        new Skill("Pięciu Smoków","Pancerz 5-Smoków","Zwiększa pancerz na 1 turę o Esencja.",3,20),
         new Skill("Podstawy Przetrwania","Odpoczynek podróżnika", "Regeneruje po każdej walce dodatkowe [10+(Esencja x Lv)] HP i MP."),
         new Skill("Podstawy Przetrwania","Opoczynek łowcy", "Podwaja regeneracje podróżnika."),
         new Skill("Podstawy Przetrwania","Opoczynek królewski", "Potraja regeneracje podróżnika."),
@@ -112,8 +112,8 @@ class Enemy {
     }
 //koniec pliku enemy
 // Tymczasowe zrobienie obiektów do bitwy, testy
-const hero1= new Hero("testowy1",3,3,3,50,50)
-const enemy1=("testowy2",5,2,50,kanały);
+const hero1= new Hero("testowy1",3,3,3,50,22)
+const enemy1=new Enemy("testowy2",5,2,30,"kanały");
 const SkillStyl1=Skills.slice(0,6);
 //Pobranie ataku i pancerza
 const EnemyAtak= document.querySelector('#EnemyAtak');
@@ -168,13 +168,13 @@ ButtonSkill6.addEventListener("click", skill6);
 //Guzik start 
 const StartBtn = document.querySelector('#Start');
 const CilkStart=()=>{
-        
+        Batlle();
 }
 StartBtn.addEventListener("click", CilkStart);
 //Okej, funkcje
 //Funkcja  zwraca dmg zandany przez kto i zmienia hp komu
 function DMG(kto,komu){
-        let bonsusDmg=0;
+        let bonsusDmg=kto.dmg;
              if(kto.Statusy!=null){//sprawdzamy czy kto ma buff do dmg
                      let del=[];
                      //biegniemy po całej tablicy, zmniejszamy tury buffów,
@@ -195,13 +195,16 @@ function DMG(kto,komu){
                              kto.Statusy.splice(el,1);  
                      });
                      }
+                     //nie można atakować ujemnie!
+                     bonsusDmg=Math.max(bonsusDmg,0);
+                     let pancerzAktualny=komu.pancerz;
                      if(komu.Statusy!=null){//sprawdzamy czy komu ma buff do pancerza
                              let del=[];
                              //biegniemy po całej tablicy, zmniejszamy tury buffów,
                              //a te co miałby 0 , zapisujemy indeksy do del
                              for(let i=komu.Statusy.length-1; i>=0; i--){
                                      if(komu.Statusy[i][1]=="pancerz"){
-                                             bonsusDmg-=komu.Statusy[i][2];
+                                        pancerzAktualny+=komu.Statusy[i][2];
                                              if(komu.Statusy[i][0]==1){
                                                      //console.log("jest"+i);
                                                     del.push(i);                                       
@@ -214,8 +217,10 @@ function DMG(kto,komu){
                              del.forEach(el => {
                                      komu.Statusy.splice(el,1);  
                              });
-                             }     
-        let dmg =Math.max(kto.dmg -komu.pancerz+bonsusDmg,0);
+                             }
+                             //pancerz nie może być ujemny!
+                             pancerzAktualny=Math.max(pancerzAktualny,0);
+        let dmg =Math.max(bonsusDmg -pancerzAktualny,0);
         komu.hp-=dmg;
         //jeszcze aktualizacja paska, poprostu obu, potem pomyśle
         PasekEnemyHP1.value=enemy1.hp;
@@ -224,7 +229,8 @@ function DMG(kto,komu){
      }
 //Funkcja  zwraca dmg zandany przez kto w pojednczym ataku i zmienia hp komu
 function wielokrotnyDMG(kto,komu,ile){
-             let bonsusDmg=0;
+             let bonsusDmg=kto.dmg;
+             let pancerzAktualny=komu.pancerz;
              if(kto.Statusy!=null){//sprawdzamy czy kto ma buff do dmg
                      //biegniemy po całej tablicy, i NIC NIE robimy z turami bufów!
                      for(let i=kto.Statusy.length-1; i>=0; i--){
@@ -232,29 +238,58 @@ function wielokrotnyDMG(kto,komu,ile){
                                      bonsusDmg+=kto.Statusy[i][2];
                              } 
                      }
-             }       
+             }
+                                  //nie można atakować ujemnie!
+                                  bonsusDmg=Math.max(bonsusDmg,0);       
              if(komu.Statusy!=null){//sprawdzamy czy kto ma buff do pancerza
                      //biegniemy po całej tablicy, i NIC NIE robimy z turami bufów!
                      for(let i=kto.Statusy.length-1; i>=0; i--){
                              if(komu.Statusy[i][1]=="pancerz"){
-                                     bonsusDmg-=komu.Statusy[i][2];
+                                pancerzAktualny+=komu.Statusy[i][2];
                              }
                      }
              } 
+                                  //pancerz nie może być ujemny!
+                                  pancerzAktualny=Math.max(pancerzAktualny,0);
              //poprostu mnożymy przez (ile-1) a potem urachamimy dmg, żeby zmniejszyć tury bufów   
-             let dmg =Math.max(kto.dmg -komu.pancerz+bonsusDmg,0);
+             let dmg =Math.max(bonsusDmg -pancerzAktualny,0);
              komu.hp-=((ile-1)*dmg);
              DMG(kto,komu);
              return dmg();
      }
-//tymczasowa tabela CoolDown
+//Oblicznie Wartości Ataku i pancerza do wyświetlenie
+function AtakPancerzValue(kto,nazwa){
+        let dmg=kto.dmg;
+        let pan=kto.pancerz;
+        for(let i=kto.Statusy.length-1; i>=0; i--){
+                if(kto.Statusy[i][1]=="dmg"){
+                        dmg+=kto.Statusy[i][2];
+                }
+                if(kto.Statusy[i][1]=="pancerz"){
+                        pan+=kto.Statusy[i][2];
+                }
+        }
+        dmg=Math.max(dmg,0);
+        pan=Math.max(pan,0);
+        switch (nazwa){
+                case "hero1":
+                        HeroAtak.textContent=dmg;
+                        HeroPancerz.textContent=pan;
+                break;
+                case "enemy1":
+                        EnemyAtak.textContent=dmg;
+                        EnemyPancerz.textContent=pan;
+                break;
+        }
+}
+//tymczasowa tabela CoolDownwartoś w indeksie 0=skill1 cd;
 const CD=[0,0,0,0,0,0];
-
+//Zmniesza o koszt skila okruchy Hero i na jego pasku, wstawia do tabeli liczbę tur
 function  AktualizacjaOkruchyCD(IndexSkill, CDSkill){
      hero1.okruchy-=SkillStyl1[IndexSkill].koszt;
      PasekHeroMP1.value=hero1.okruchy;
      CD[IndexSkill]=CDSkill;
-     console.log(CD);
+     //console.log(CD);
 }
 
 function skill(numer){
@@ -276,10 +311,12 @@ function skill(numer){
                 case 1:
  //Redukuje pancerz przeciwnika na 1 turę o Esencję.
  enemy1.Statusy.push([1,"pancerz",-hero1.esencja]);
+ AtakPancerzValue(enemy1,"enemy1");
                 break;
                 case 2:
  //Przeciwnik przez 1 turę zadaje mniejsze obrażenia o Esencję.
  enemy1.Statusy.push([1,"dmg",-hero1.esencja]);
+ AtakPancerzValue(enemy1,"enemy1");
                 break;
                 case 3:
 //Jeśli przeciwnik zadał 0 obrażeń, kontratakujesz.
@@ -293,11 +330,12 @@ hero1.Statusy.pop(); console.log(hero1);//usuwa ostatni element
                 case 5:
 //Zwiększa bazowe obrażenia na 1 turę o Esencję
 hero1.Statusy.push([1,"dmg",hero1.esencja]);
+AtakPancerzValue(hero1,"hero1");
                 break;
                 case 6:
 //Zwiększa pancerz na 1 turę o Esencja.
 hero1.Statusy.push([1,"pancerz",hero1.esencja]);
-
+AtakPancerzValue(hero1,"hero1");
                 break;
         }
 }
@@ -322,4 +360,45 @@ console.log(enemy1.name+" zatakuje 3 razy!");
                 break;
         }
         return numer;
+}
+
+function PreBatlle(){
+        HeroAtak.textContent=hero1.dmg;
+        HeroPancerz.textContent=hero1.pancerz;
+        EnemyAtak.textContent=enemy1.dmg;
+        EnemyPancerz.textContent=enemy1.pancerz;
+        console.log(hero1.ShowHero());
+}
+PreBatlle();
+//Po każdej turze okruchy się odnawiają o 10
+function OdnowienieOkruchów(){
+        console.log("zregereowałeś 10 okruchów!");
+        hero1.okruchy+=10;
+        PasekHeroMP1.value=hero1.okruchy;
+}
+//Po każdej turze aktualizujemy CD guzików
+function AktualizacjaCD(){
+        CD.forEach((el,index) => {
+                if (el>0){
+                        CD[index]-=1; 
+                }
+        });
+}
+function Batlle(){
+        //zadnie dmg przez hero
+        DMG(hero1,enemy1);
+        //odświerzamy pasek atk/pancerz hero
+        AtakPancerzValue(hero1,"hero1");
+        if(enemy1.hp<=0){
+                alert("Wygrałeś!!!");
+        } else{
+                DMG(enemy1,hero1);
+                AtakPancerzValue(enemy1,"enemy1");  
+        }
+        if(hero1.hp<=0){
+                alert("Przegrałeś!!!");
+        }
+        console.log("TwojeHP="+hero1.hp," EnemyHP="+ enemy1.hp);
+        OdnowienieOkruchów();
+        AktualizacjaCD();
 }
