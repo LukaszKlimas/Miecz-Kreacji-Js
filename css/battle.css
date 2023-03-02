@@ -1,50 +1,88 @@
-#PasekButton {
--webkit-box-shadow: 0px 0px 10px 6px rgba(48, 87, 148, 1);
--moz-box-shadow: 0px 0px 10px 6px rgba(48, 87, 148, 1);
-box-shadow: 0px 0px 10px 6px rgba(48, 87, 148, 1);
-max-width:340px
+.layout{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: flex-start;
+  width: 1920px;
+  height: 1080px;
+  font-size: 30px;
 }
-#PasekButton > :first-child {
-    margin-left: 8px;
+.EnemyContainer, .HeroContainer, .PasekButton{
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+justify-content: center;
+align-items: center;
+align-content: flex-start;
+width: 1920px;
 }
-button {
-    padding: 10px 20px;
+.EnemyContainer, .HeroContainer{
+height:450px;
+}
+.EnemySlot{
+height:450px;
+display: flex;
+flex-direction: column;
+flex-wrap: wrap;
+justify-content: flex-start;
+align-items: center;
+align-content: flex-start;
+}
+.EnemyObrazek{
+  width: 226px;
+  height:338px;
+}
 
-    margin-top: 5px;
-    margin-bottom: 5px;
+.PasekButton {
+  -webkit-box-shadow: 0px 0px 10px 6px rgba(48, 87, 148, 1);
+  -moz-box-shadow: 0px 0px 10px 6px rgba(48, 87, 148, 1);
+  box-shadow: 0px 0px 10px 6px rgba(48, 87, 148, 1);
+  height:180px;
+  width: 1160px;
 }
-#Start {
-  margin-left: 100px;
-  width: 100px;
+.btn{
+  margin: 5px;
+  height:170px;
+  width: 180px;
+  font-size: 30px;
 }
-
-.card {
-    display: flex;
-    flex-direction:column;
-    flex-basis: 360px;
-    margin: 2px;
-    padding: 2px;
-    background-color: #fff;
-    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
-      0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-    border-radius: 4px;
-  }
-  
-  .card > .content {
-    flex-grow: 1;
-
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 4px;
-  }
-  .card > #PasekButton {
-    padding: 10px;
-    text-align: center;
-    background-color: teal;
-    color: white;
-    border-radius: 4px;
-  }
-  .container {
-    display: flex;
-    justify-content:left;
-  }
+.HeroStaty, .HeroSlot, .HeroAkcja, .EnemyAkcja{
+display: flex;
+flex-direction: column;
+flex-wrap: wrap;
+justify-content: flex-start;
+align-items: center;
+align-content: center;
+}
+.HeroStaty, .HeroSlot{
+width: 450px;
+height:450px;
+}
+.HeroAkcja{
+  width: 45px;
+}
+.HeroObrazek{
+  width: 400px;
+  height:400px;
+}
+.Start{
+  width: 200px;
+  height:150px;
+  font-size: 30px;
+}
+img{
+  width: 100%;
+  height: auto;
+}
+#HeroAtak,#EnemyAtak{
+  color: red;
+}
+#HeroPancerz,#EnemyPancerz{
+  color:chartreuse;
+}
+#HeroPancerz,#EnemyPancerz,#HeroAtak,#EnemyAtak{
+  font-weight:900;
+  font-size: 40px;
+}

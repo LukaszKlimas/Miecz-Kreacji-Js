@@ -11,46 +11,54 @@
     <ul>
       <!-- <li><a href="nieistnieje.html">tymczasowy nie działający link</a></li> -->
     </ul>
-    <div class="container">
-    <div class="card">
-      <div class="content">
-      <p><span class="txt"> Enemy HP</span></p>
-      <progress id="EnemyHP1" value="0" max="100"></progress>
-      <!-- <input id="EnemyHP1" type="range" min="0" max="50" />-->
-      <p><span class="txt"> Hero HP</span></p>
-      <progress id="HeroHP1" value="0" max="100"></progress>
-      <!-- <input id="HeroHP1" type="range" min="0" max="50" />-->
-      <p><span class="txt"> Hero MP</span></p>
-      <progress id="HeroMP1" value="0" max="100"></progress>
-        <!-- <input id="HeroMP1" type="range" min="0" max="50" />-->
-      </br>
-          <span id="text"></span>
-        <button id="Start" type="Start">Atak!</button>
-      </br>
-    </br>
-        <div id="PasekButton">
-          <button id="ButtonSkill1" type="button">A</button>
-          <button id="ButtonSkill2" type="button">S</button>
-          <button id="ButtonSkill3" type="button">D</button>
-          <button id="ButtonSkill4" type="button">J</button>
-          <button id="ButtonSkill5" type="button">K</button>
-          <button id="ButtonSkill6" type="button">L</button>
+    <div class="layout">
+      <div class="EnemyContainer">
+        <div class="EnemySlot"> 
+          <progress id="EnemyHP1" value="0" max="100"></progress>
+          <div class="EnemyObrazek">
+            <img src="Zimages/enemy1.JPG" alt=" ">
+          </div>
+          <div class="EnemyStatusy">Statusy</div>
+        </div>
+        <div class="EnemyAkcja">
+          <span id="EnemyAtak">0</span>
+          <span id="EnemyPancerz">0</span>
         </div>
       </div>
-    </div>
-    <div class="card">
-      <div class="content">
-        <span class="txt" id="text2"> Bla</span>
+      <!--       -->
+      <div class="HeroContainer">
+        <div class="HeroStaty">
+          <p><span class="BazoweStaty">Bazowe</span></p>
+          <p><span class="txt">Zdrowie</span></p>
+          <progress id="HeroHP1" value="0" max="100"></progress>
+          <p><span class="txt">Okruchy</span></p>
+          <progress id="HeroMP1" value="0" max="100"></progress>
+        </div>
+        <div class="HeroSlot">
+          <div class="HeroObrazek">
+            <img src="Zimages/Hero1.jpg" alt=" ">
+          </div>
+          <div class="HeroStatusy">Statusy</div>
+        </div>
+        <div class="HeroAkcja">
+          <span id="HeroAtak">0</span>
+          <span id="HeroPancerz">0</span>
+        </div>
+        <button id="Start" class="Start" type="button">Atak!</button>
       </div>
-  
-     
-
-    </div>
-    </div> 
-
-      <script src="js/battle.js"></script>  
-      <!-- <script src="js/Hero.js"></script>  -->
+      <!--       -->
+      <div id="PasekButton" class="PasekButton" >
+        <button id="ButtonSkill1" class="btn" type="button">A</button>
+        <button id="ButtonSkill2" class="btn" type="button">S</button>
+        <button id="ButtonSkill3" class="btn" type="button">D</button>
+        <button id="ButtonSkill4" class="btn" type="button">J</button>
+        <button id="ButtonSkill5" class="btn" type="button">K</button>
+        <button id="ButtonSkill6" class="btn" type="button">L</button>
+      </div>
+    </div>    
   </body>
+  <script src="js/battle.js"></script>  
+  <!-- <script src="js/Hero.js"></script>  -->
 </html>
 
 <!-- stary event lisner by nie zapomnieć

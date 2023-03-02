@@ -17,13 +17,18 @@ class Hero {
         switch (gdzie){
             case "strength": this.strength+=1; break;
             case "stamina" : this.stamina+=1; break;
-            case "esencja" :this.esencja+=1; break;
+            case "esencja" : this.esencja+=1; break;
         }
         this.okruchy+=10; 
         this.hp+=10;
         this.MaxHP+=10;
         this.MaxMP+=10;
         this.lv+=1;
+    }
+    ShowHero(){
+        for (const key in this) {
+            console.log(key+": "+this[key]);
+        }
     }
 }
 const UnlockableHero =[

@@ -6,15 +6,18 @@ class Enemy {
       this.hp=hp
       this.lokacja=lokacja;
     }
+    ShowEnemy(){
+      for (const key in this) {
+          console.log(key+": "+this[key]);
+      }
   }
+  }
+  const bestiary =[
+      new Enemy("Maślak",3, 0, 10,"Kanały"),
+      new Enemy("Muchomor",5, 0, 10,"Kanały"),
+      new Enemy("Pieczarka", 4, 1, 10,"Kanały")
 
-const bestiary =[
-    new Enemy("Maślak",3, 0, 10,"Kanały"),
-    new Enemy("Muchomor",5, 0, 10,"Kanały"),
-    new Enemy("Pieczarka", 4, 1, 10,"Kanały")
-
-];
-
-function AddNewEnemy(name,dmg,pancerz,hp,lokacja){
-    bestiary.push(new Enemy (name,dmg,pancerz,hp,lokacja));
+  ];
+  function AddNewEnemy(name,dmg,pancerz,hp,lokacja){
+      bestiary.push(new Enemy (name,dmg,pancerz,hp,lokacja));
 }

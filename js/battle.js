@@ -1,5 +1,60 @@
-//Temp kopjowanie skilli
+// plik Hero
+class Hero {
+        constructor(name,strength,stamina,esencja,okruchy,hp){
+        this.name=name;
+        this.strength=strength;
+        this.stamina=stamina;
+        this.esencja=esencja;
+        this.okruchy=okruchy;
+        this.hp=hp;
+        this.dmg=strength; //w momencie konstrukcji dmg=strenght
+        this.pancerz=stamina;
+        this.lv=1;
+        this.MaxHP=hp;
+        this.MaxMP=okruchy;
+        this.SkillTree=[];
+        this.Statusy=[];
+            }
+        LevelUP(gdzie){
+            switch (gdzie){
+                case "strength": this.strength+=1; break;
+                case "stamina" : this.stamina+=1; break;
+                case "esencja" : this.esencja+=1; break;
+            }
+            this.okruchy+=10; 
+            this.hp+=10;
+            this.MaxHP+=10;
+            this.MaxMP+=10;
+            this.lv+=1;
+        }
+        ShowHero(){
+                let a;
+            for (const key in this) {
+                a=+(key+": "+this[key]+"\n");
+            }
+            return a;
+        }
+    }
+    const UnlockableHero =[
+        //new Hero();
+    ];
+    function Random(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    function RandomHero(){
+        const heroRand =new Hero(
+            "Cezar", Random(1,6), Random(1,6), Random(1,6), 50,50
+        );
+        return heroRand;
+    }
+//koniec pliku hero
+//Plik Skill
 class Skill{
+        constructor(kategoria,nazwa, opis){
+            this.kategoria=kategoria;
+            this.nazwa=nazwa;
+            this.opis=opis;
+        }
         constructor(kategoria,nazwa, opis, cd, koszt){
             this.kategoria=kategoria;
             this.nazwa=nazwa;
@@ -8,28 +63,63 @@ class Skill{
             this.koszt=koszt;
         }
         ShowSkill(){
-                if(this.cd!=null){
-                    return `${this.nazwa}: ${this.opis} CD:${this.cd}, koszt:${this.koszt}.`;
-                }
-                return `${this.nazwa}: ${this.opis}`;
+            if(this.cd!=null){
+                return `${this.nazwa}: ${this.opis} CD:${this.cd}, koszt:${this.koszt}.`;
             }
+            return `${this.nazwa}: ${this.opis}`;
+        }
     }
-    const SkillStyl1 =[
+    const Skills =[
         new Skill("Ostrze Penatgramu","Atak przebijający","Redukuje pancerz przeciwnika na 1 turę o Esencję.",3,20),
         new Skill("Ostrze Penatgramu","Osłabienie","Przeciwnik przez 1 turę zadaje mniejsze obrażenia o Esencję.",3,20),
         new Skill("Ostrze Penatgramu","Kontratak lotosu","Jeśli przeciwnik zadał 0 obrażeń, kontratakujesz.",1,10),
         new Skill("Pięciu Smoków","Moc 5-Smoków","Następny atak ignoruje buffy przeciwnika.",4,20),
         new Skill("Pięciu Smoków","Wzmocnienie 5-Smoków","Zwiększa bazowe obrażenia na 1 turę o Esencję.",3,20),
         new Skill("Pięciu Smoków","Pancerz 5-Smoków","Zwiększa pancerz na 1 turę o Esencja.",2,10),
+        new Skill("Podstawy Przetrwania","Odpoczynek podróżnika", "Regeneruje po każdej walce dodatkowe [10+(Esencja x Lv)] HP i MP."),
+        new Skill("Podstawy Przetrwania","Opoczynek łowcy", "Podwaja regeneracje podróżnika."),
+        new Skill("Podstawy Przetrwania","Opoczynek królewski", "Potraja regeneracje podróżnika."),
+        new Skill("Podstawy Przetrwania","Rzemiosło-podstawy", "Zamiast odpoczynku w obozie możesz tworzyć losowy pospolity ekwipunek."),
+        new Skill("Podstawy Przetrwania","Rzemiosło-zaawansowane", "Zamiast odpoczynku w obozie możesz tworzyć wybrany pospolity ekwipunek."),
+        new Skill("Podstawy Przetrwania","Alchemia-podstawy", "Zamiast odpoczynku w obozie możesz tworzyć losową pospolitą miksturę."),
+        new Skill("Podstawy Przetrwania","Alchemia-podstawy", "Zamiast odpoczynku w obozie możesz tworzyć losową wybraną miksturę."),
     ];
-
-// Tymczasowe zrobienie obiektów do bitwy
-const hero1={
-        name:"testowy1",dmg:3,pancerz:3,esencja:3,okruchy:50,hp:50, MaxHP:30, MaxMP:50, Statusy:[]
-}
-const enemy1={
-        name:"testowy2",dmg:5,pancerz:2,hp:10,lokacja:"kanały,", Statusy:[]
-}
+//koniec pliku Skill
+//Plik enemy
+class Enemy {
+        constructor(name,dmg,pancerz,hp,lokacja){
+          this.name=name;
+          this.dmg=dmg;
+          this.pancerz=pancerz;
+          this.hp=hp
+          this.Statusy=[];
+          this.lokacja=lokacja;
+        }
+        ShowEnemy(){
+          for (const key in this) {
+              console.log(key+": "+this[key]);
+          }
+      }
+      }
+      const bestiary =[
+          new Enemy("Maślak",3, 0, 10,"Kanały"),
+          new Enemy("Muchomor",5, 0, 10,"Kanały"),
+          new Enemy("Pieczarka", 4, 1, 10,"Kanały")
+    
+      ];
+      function AddNewEnemy(name,dmg,pancerz,hp,lokacja){
+          bestiary.push(new Enemy (name,dmg,pancerz,hp,lokacja));
+    }
+//koniec pliku enemy
+// Tymczasowe zrobienie obiektów do bitwy, testy
+const hero1= new Hero("testowy1",3,3,3,50,50)
+const enemy1=("testowy2",5,2,50,kanały);
+const SkillStyl1=Skills.slice(0,6);
+//Pobranie ataku i pancerza
+const EnemyAtak= document.querySelector('#EnemyAtak');
+const EnemyPancerz=document.querySelector('#EnemyPancerz');
+const HeroAtak= document.querySelector('#HeroAtak');
+const HeroPancerz=document.querySelector('#HeroPancerz');
 //Pobranie paska HP i MP
 const PasekEnemyHP1 = document.querySelector('#EnemyHP1');
 const PasekHeroHP1 = document.querySelector('#HeroHP1');
@@ -75,7 +165,7 @@ ButtonSkill3.addEventListener("click", skill3);
 ButtonSkill4.addEventListener("click", skill4);
 ButtonSkill5.addEventListener("click", skill5);
 ButtonSkill6.addEventListener("click", skill6);
-//Guzik start - tylko przeglądarkowy
+//Guzik start 
 const StartBtn = document.querySelector('#Start');
 const CilkStart=()=>{
         
@@ -157,22 +247,31 @@ function wielokrotnyDMG(kto,komu,ile){
              DMG(kto,komu);
              return dmg();
      }
-     //tymczasowa tabela CoolDown
-     const CD=[0,0,0,0,0,0];
+//tymczasowa tabela CoolDown
+const CD=[0,0,0,0,0,0];
+
+function  AktualizacjaOkruchyCD(IndexSkill, CDSkill){
+     hero1.okruchy-=SkillStyl1[IndexSkill].koszt;
+     PasekHeroMP1.value=hero1.okruchy;
+     CD[IndexSkill]=CDSkill;
+     console.log(CD);
+}
+
 function skill(numer){
         if (numer==3 ||numer==4){
                 console.log("Niezaimplementowane jeszcze");
                  return;  
         }
-        if(hero1.okruchy<SkillStyl1[numer-1][4]){
+        if(hero1.okruchy<SkillStyl1[numer-1].koszt){
                 console.log("Brak okruchów");
                 return;
         }
-        if(CD[numer]>0){
-                console.log(`Pozostało ${CD[numer]} tur do użycia`);
+        if(CD[numer-1]>0){
+                console.log(`Pozostała następująca ilość tur: ${CD[numer-1]} do użycia`);
                 return;
         }
  console.log(SkillStyl1[numer-1].ShowSkill());
+ AktualizacjaOkruchyCD(numer-1, SkillStyl1[numer-1].cd);
         switch (numer){
                 case 1:
  //Redukuje pancerz przeciwnika na 1 turę o Esencję.
@@ -189,34 +288,38 @@ console.log(DMG(hero1,enemy1));
                 break;
                 case 4:
  //Następny atak ignoruje buffy przeciwnika.
- hero1.Statusy.pop(); console.log(hero1);//usuwa ostatni element
+hero1.Statusy.pop(); console.log(hero1);//usuwa ostatni element
                 break;
                 case 5:
 //Zwiększa bazowe obrażenia na 1 turę o Esencję
 hero1.Statusy.push([1,"dmg",hero1.esencja]);
-console.log(hero1);
                 break;
                 case 6:
 //Zwiększa pancerz na 1 turę o Esencja.
 hero1.Statusy.push([1,"pancerz",hero1.esencja]);
+
                 break;
         }
 }
-
-//Testy
-/*
-console.log("Test1");
-console.log (hero1.hp,enemy1.hp);
-DMG(hero1,enemy1);
-DMG(enemy1,hero1);
-console.log (hero1.hp,enemy1.hp);
-
-console.log("Test2");
-console.log(PasekHeroHP1.value);
-PasekHeroHP1.value-=DMG(enemy1,hero1);
-console.log(PasekHeroHP1.value);
-
-function Battle(){
-    
+function ZapowiedźAtaku(){
+        //funkcja pokazuje co przeciwnik zrobi w swojej turze.
+        let numer =Math.floor(Math.random() * (5 - 1 + 1)) + 1;
+        switch (numer){
+                case 1: //użyje wzmocnienia
+console.log(enemy1.name+" użyje wzmocnienia!");
+                break;
+                case 2: //użyje osłabienia
+console.log(enemy1.name+" użyje osłabienia!");
+                break;
+                case 3: //atak!
+console.log(enemy1.name+" zatakuje!");
+                break;
+                case 4: //2xatak!
+console.log(enemy1.name+" zatakuje 2 razy!");
+                break;
+                case 5: //3xatak!
+console.log(enemy1.name+" zatakuje 3 razy!");
+                break;
+        }
+        return numer;
 }
-*/
