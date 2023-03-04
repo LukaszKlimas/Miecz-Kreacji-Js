@@ -1,5 +1,12 @@
+:root{
+  --sizeH:95vh;
+  --sizeW:calc(16*var(--sizeH)/9);
+  --sizeHCont:calc(5*var(--sizeH)/12);
+  --PasekBtnH:calc(2*var(--sizeH)/12);
+}
 body{
-  font-size: 30px;
+  font-size: 3vh;
+  display:flex;
 }
 .layout{
   display: flex;
@@ -8,8 +15,8 @@ body{
   justify-content: flex-start;
   align-items: center;
   align-content: flex-start;
-  width: 1920px;
-  height: 1080px;
+  width: var(--sizeW);
+  height: var(--sizeH);
 }
 .EnemyContainer, .HeroContainer, .PasekButton{
 display: flex;
@@ -18,13 +25,14 @@ flex-wrap: wrap;
 justify-content: center;
 align-items: center;
 align-content: flex-start;
-width: 1920px;
+width: var(--sizeW);
 }
 .EnemyContainer, .HeroContainer{
-height:450px;
+height:var(--sizeHCont);
 }
 .EnemySlot{
-height:450px;
+height:var(--sizeHCont);
+width:calc(var(--sizeW)/5.4);
 display: flex;
 flex-direction: column;
 flex-wrap: wrap;
@@ -33,22 +41,23 @@ align-items: center;
 align-content: flex-start;
 }
 .EnemyObrazek{
-  width: 226px;
-  height:338px;
+  width: calc(var(--sizeW)/5.4);
+  height:calc(8*var(--sizeHCont)/10);
+  justify-content: center;
+  display: flex;
 }
-
 .PasekButton {
   -webkit-box-shadow: 0px 0px 10px 6px rgba(48, 87, 148, 1);
   -moz-box-shadow: 0px 0px 10px 6px rgba(48, 87, 148, 1);
   box-shadow: 0px 0px 10px 6px rgba(48, 87, 148, 1);
-  height:180px;
-  width: 1160px;
+  height:var(--PasekBtnH);
+  width:calc(71*var(--sizeW)/89);
 }
 .btn{
   margin: 5px;
-  height:170px;
-  width: 180px;
-  font-size: 30px;
+  height:calc(var(--PasekBtnH)*0.9);
+  width: calc(22*var(--sizeW)/224);
+  font-size: 3vh;
 }
 .HeroStaty, .HeroSlot, .HeroAkcja, .EnemyAkcja{
 display: flex;
@@ -59,24 +68,30 @@ align-items: center;
 align-content: center;
 }
 .HeroStaty, .HeroSlot{
-width: 450px;
-height:450px;
+width: calc(30*var(--sizeW)/89);
+height: var(--sizeHCont);
 }
-.HeroAkcja{
-  width: 45px;
+.HeroAkcja, .EnemyAkcja{
+  width: calc(2*var(--sizeW)/89);
+  margin-left: -5vh;
+}
+.HeroSpacja{
+  width: calc(2*var(--sizeW)/89);
 }
 .HeroObrazek{
-  width: 400px;
-  height:400px;
+  justify-content: center;
+  display: flex;
+  width: calc(8*var(--sizeW)/32);
+  height:calc(8*var(--sizeHCont)/10);
 }
 .Start{
-  width: 200px;
-  height:150px;
-  font-size: 30px;
+  width: calc(9*var(--sizeW)/89);
+  height:calc(3*var(--sizeHCont)/10);
+  font-size: 3vh;
 }
 img{
-  width: 100%;
-  height: auto;
+  height: 100%;
+  width: auto;
 }
 #HeroAtak,#EnemyAtak{
   color: red;
@@ -86,5 +101,8 @@ img{
 }
 #HeroPancerz,#EnemyPancerz,#HeroAtak,#EnemyAtak{
   font-weight:900;
-  font-size: 40px;
+  font-size:5vh;
+}
+progress{
+  width: 70%;
 }
